@@ -148,15 +148,15 @@ public class ImageThreshNCrop {
         totalPixelsRight = (double)MatrixName.rows() * (double)MatrixName.cols();
         double blackPixelsRight;
         blackPixelsRight = (double)totalPixelsRight - (double)Core.countNonZero(MatrixName); //non zeros are WHITE
-        System.out.println("Black Pixels Right: " + blackPixelsRight);
+        //System.out.println("Black Pixels Right: " + blackPixelsRight);
         if(totalPixelsRight - blackPixelsRight < whitePixUpperBound) //Only ONE vision target seen, TODO Numbers
             {
-                    System.out.println("GO RIGHT");
+                    //System.out.println("GO RIGHT");
                     return 2;
             }
         else if(totalPixelsRight - blackPixelsRight >= whitePixUpperBound)//TWO vision targets seen, TODO Numbers
             {
-                    System.out.println("GO LEFT");
+                    //System.out.println("GO LEFT");
                     return 1;
             }
         return 0;
@@ -240,17 +240,21 @@ public class ImageThreshNCrop {
                 me = Crop(me);
                 imwrite("ThreshCropped.jpg", me);
                 DirectionTest(me);
+                System.out.println(DirectionTest(me));
                 if(DirectionTest(me) == 1)
                 {
                     datatable.putString("Direction: ", "GO LEFT");
+                    System.out.println("GO LEFT");
                 }
                 else if(DirectionTest(me) == 2)
                 {
                     datatable.putString("Direction: ", "GO RIGHT");
+                    System.out.println("GO RIGHT");
                 }
                 else if(DirectionTest(me) == 1)
                 {
                     datatable.putString("Direction: ", "INCONCLUSIVE");
+                    System.out.println("INCONCLUSIVE");
                 }
             }
         }
