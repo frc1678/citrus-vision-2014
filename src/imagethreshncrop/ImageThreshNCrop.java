@@ -190,16 +190,22 @@ public class ImageThreshNCrop {
         Core.split(original, SourceForThresh);
         //lowest color value
         threshold(SourceForThresh.get(0), LowThreshDestination.get(0), hThreshLow, 255, 0); //binary to register what's above
+        //threshold(SourceForThresh.get(0), LowThreshDestination.get(0), hThreshHigh, 255, 0); //binary to register what's above
         threshold(SourceForThresh.get(1), LowThreshDestination.get(1), sThreshLow, 255, 0);
         threshold(SourceForThresh.get(2), LowThreshDestination.get(2), vThreshLow, 255, 0); 
         //highest color value
         threshold(SourceForThresh.get(0), HighThreshDestination.get(0), hThreshHigh, 255, 1); //inverted binary to register what's below
+        //threshold(SourceForThresh.get(0), LowThreshDestination.get(0), hThreshLow, 255, 0); //binary to register what's above
         threshold(SourceForThresh.get(1), HighThreshDestination.get(1), sThreshHigh, 255, 1);
         threshold(SourceForThresh.get(2), HighThreshDestination.get(2), vThreshHigh, 255, 1);
         Core.bitwise_and(LowThreshDestination.get(0), HighThreshDestination.get(0), hue);
         Core.bitwise_and(LowThreshDestination.get(1), HighThreshDestination.get(1), saturation);
         Core.bitwise_and(LowThreshDestination.get(2), HighThreshDestination.get(2), value);
+        imwrite("Saturation.jpg", saturation);
+        imwrite("Value.jpg", value);
+        imwrite("Hue.jpg", hue);
         Core.bitwise_and(saturation, value, threshedimage);
+        Core.bitwise_and(hue, threshedimage, threshedimage);
         imwrite("ThreshedImage.jpg", threshedimage);
         return threshedimage;
     }
@@ -219,7 +225,6 @@ public class ImageThreshNCrop {
     }
     public static Mat CameraCrop(String ImageSource) {
         Mat source = imread(ImageSource);
-        imwrite("Source.jpg", source);
         Size sourcesize = source.size();
         int sourceHeight = (int)sourcesize.height;
         int sourceWidth = (int)sourcesize.width;
@@ -289,9 +294,9 @@ public class ImageThreshNCrop {
             Mat img = imread("newImage.jpg");
             imwrite("InitialImage.jpg", img);
             Mat me;
-            me = CameraCrop("newImage.jpg");
-            //me = Thresh("newImage.jpg");
-            //me = Crop(me);
+            //me = CameraCrop("newImage.jpg");
+            me = Thresh("newImage.jpg");
+            me = Crop(me);
             //DirectionTest(me);
         }
         catch(NoRouteToHostException f) 
