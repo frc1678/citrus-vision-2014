@@ -31,7 +31,7 @@ import java.util.List;
 public class ImageThreshNCrop {
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("C:\\Users\\Citrus Circuits\\Downloads\\opencv\\build\\java\\x86\\opencv_java248.dll");
+        System.load("C:\\opencv\\build\\java\\x86\\opencv_java248.dll");
     }
     /**
      * @param args the command line arguments
@@ -40,9 +40,9 @@ public class ImageThreshNCrop {
     public static void main(String[] args) throws IOException {
         GetFromText();
        //ImageLoad();
-       OnRobitTest();
+       //OnRobitTest();
        //OnSystemTest("newImage.jpg");
-       //FromCameraTest();
+       FromCameraTest();
     }
     static int hThreshHigh;
     static int hThreshLow;
@@ -54,6 +54,8 @@ public class ImageThreshNCrop {
     static int whitePixUpperBound;
     static double leftsidestartpoint;
     static double leftsidecropdistance;
+    static double ystartpos; //for percentage of area cropped on the photo. Used in cropping images
+    
     public static void ImageLoad() throws IOException {
         try
         {
@@ -130,6 +132,10 @@ public class ImageThreshNCrop {
                     {
                         leftsidecropdistance = Double.parseDouble(lineParts[1]);
                     }
+                    else if(lineParts[0].equals("Y_STARTPOS"))
+                    {
+                        ystartpos = Double.parseDouble(lineParts[1]);
+                    }
                 }
             }
             catch(IOException f)
@@ -151,12 +157,12 @@ public class ImageThreshNCrop {
         //System.out.println("Black Pixels Right: " + blackPixelsRight);
         if(totalPixelsRight - blackPixelsRight < whitePixUpperBound) //Only ONE vision target seen, TODO Numbers
             {
-                    //System.out.println("GO RIGHT");
+                    System.out.println("GO RIGHT");
                     return 2;
             }
         else if(totalPixelsRight - blackPixelsRight >= whitePixUpperBound)//TWO vision targets seen, TODO Numbers
             {
-                    //System.out.println("GO LEFT");
+                    System.out.println("GO LEFT");
                     return 1;
             }
         return 0;
@@ -204,11 +210,26 @@ public class ImageThreshNCrop {
         int xSize = (int)originalsize.width;
         double yCrop = 0;
         double startingpoint = (leftsidestartpoint*xSize); //the left 
-        double heightCrop = ySize*.66; //to exclude bumper reflections
+        double heightCrop = ySize*ystartpos; //to exclude bumper reflections
         double secondarycrop = ((leftsidecropdistance)*xSize);
-        Rect straightAhead = new Rect((int)startingpoint, 0, (int)secondarycrop, (int)heightCrop);
+        Rect straightAhead = new Rect((int)startingpoint, (int)heightCrop, (int)secondarycrop, (ySize-(int)heightCrop));
         Mat cropStraightAhead = new Mat(original, straightAhead); //unalteredorinal should be jasmineBlur
         imwrite("CroppedTest.jpg", cropStraightAhead);
+        return cropStraightAhead;
+    }
+    public static Mat CameraCrop(String ImageSource) {
+        Mat source = imread(ImageSource);
+        imwrite("Source.jpg", source);
+        Size sourcesize = source.size();
+        int sourceHeight = (int)sourcesize.height;
+        int sourceWidth = (int)sourcesize.width;
+        double yCrop = 0;
+        double startingpoint = (leftsidestartpoint*sourceWidth); //the left side
+        double heightCrop = sourceHeight*ystartpos; //exclude bumpers
+        double secondarycrop = ((leftsidecropdistance)*sourceWidth);
+        Rect straightAhead = new Rect ((int)startingpoint, (int)heightCrop, (int)secondarycrop, (sourceHeight-(int)heightCrop));
+        Mat cropStraightAhead = new Mat(source, straightAhead); //unalteredorinal should be jasmineBlur
+        imwrite("CameraCropped.jpg", cropStraightAhead);
         return cropStraightAhead;
     }
     public static void OnSystemTest(String ImageSource){
@@ -268,9 +289,10 @@ public class ImageThreshNCrop {
             Mat img = imread("newImage.jpg");
             imwrite("InitialImage.jpg", img);
             Mat me;
-            me = Thresh("newImage.jpg");
-            me = Crop(me);
-            DirectionTest(me);
+            me = CameraCrop("newImage.jpg");
+            //me = Thresh("newImage.jpg");
+            //me = Crop(me);
+            //DirectionTest(me);
         }
         catch(NoRouteToHostException f) 
         {
