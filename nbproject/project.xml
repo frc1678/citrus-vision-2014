@@ -3,11 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-<<<<<<< HEAD
             <name>ImageThreshNCrop</name>
-=======
-            <name>imageSave-N-Load</name>
->>>>>>> 92317b864dcef035b96b4baec5edcc62adb63306
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

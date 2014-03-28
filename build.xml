@@ -7,13 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<<<<<<< HEAD
 <project name="ImageThreshNCrop" default="default" basedir=".">
-    <description>Builds, tests, and runs the project ImageThreshNCrop.</description>
-=======
-<project name="imageSave-N-Load" default="default" basedir=".">
-    <description>Builds, tests, and runs the project imageSave-N-Load.</description>
->>>>>>> 92317b864dcef035b96b4baec5edcc62adb63306
+    <description>Builds, tests, and runs the project ImagesFromCamera.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 
@@ -63,11 +58,7 @@
 
     An example of overriding the target for project execution could look like this:
 
-<<<<<<< HEAD
-        <target name="run" depends="ImageThreshNCrop-impl.jar">
-=======
-        <target name="run" depends="imageSave-N-Load-impl.jar">
->>>>>>> 92317b864dcef035b96b4baec5edcc62adb63306
+        <target name="run" depends="ImagesFromCamera-impl.jar">
             <exec dir="bin" executable="launcher.exe">
                 <arg file="${dist.jar}"/>
             </exec>
