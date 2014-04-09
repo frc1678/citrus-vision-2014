@@ -169,7 +169,7 @@ public class ImageThreshNCrop {
             {
                 while ((line = reader.readLine()) != null) {
                     lineParts = line.split(" ");
-                    if(lineParts[0].equals("STARTSIDE"))
+                    if(lineParts[0].equals("STARTSIDE")) 
                     {
                         if(lineParts[1].equals("RIGHT"))
                         {
@@ -360,11 +360,11 @@ public class ImageThreshNCrop {
         }
         System.out.println(hThreshHigh+ ", " + hThreshLow + ", " + sThreshHigh + ", " + sThreshLow + ", " + vThreshHigh + ", " + vThreshLow);
         Imgproc.cvtColor(original, original, Imgproc.COLOR_RGB2HSV);
-        imwrite("Intermediate.jpg", original);
+        //imwrite("Intermediate.jpg", original);
         Core.split(original, SourceForThresh);
-        imwrite("SourceThresh0.jpg", SourceForThresh.get(0));
-        imwrite("SourceThresh1.jpg", SourceForThresh.get(1));
-        imwrite("SourceThresh2.jpg", SourceForThresh.get(2));
+        //imwrite("SourceThresh0.jpg", SourceForThresh.get(0));
+        //imwrite("SourceThresh1.jpg", SourceForThresh.get(1));
+        //imwrite("SourceThresh2.jpg", SourceForThresh.get(2));
         
         threshold(SourceForThresh.get(0), LowThreshDestination.get(0), selfLow, 255, 0); //binary to register what's above 
         threshold(SourceForThresh.get(1), LowThreshDestination.get(1), sLow, 255, 0);
@@ -398,7 +398,7 @@ public class ImageThreshNCrop {
         return threshedimage;
     }
     public static Mat Crop(Mat original) {
-        imwrite("Original.jpg", original);
+        //imwrite("Original.jpg", original);
         Size originalsize = original.size();
         int ySize = (int)originalsize.height;
         int xSize = (int)originalsize.width;
@@ -409,7 +409,7 @@ public class ImageThreshNCrop {
         double secondarycrop = ((leftSideCropDistance)*xSize);
         Rect straightAhead = new Rect((int)xStartingpoint, (int)yCrop, (int)secondarycrop, (int)heightCrop);
         Mat cropStraightAhead = new Mat(original, straightAhead); //unalteredorinal should be jasmineBlur
-        imwrite("CroppedTest.jpg", cropStraightAhead);
+        //imwrite("CroppedTest.jpg", cropStraightAhead);
         return cropStraightAhead;
     }
     public static void OnSystemTest(String ImageSource){
@@ -435,19 +435,19 @@ public class ImageThreshNCrop {
                 destinationFile = "newImage.jpg";
                 SaveImage(imageUrl, destinationFile);
                 Mat img = imread("newImage.jpg");
-                imwrite("Purple.jpg", img);
+                //imwrite("Purple.jpg", img);
                 Mat me;
                 me = Thresh("newImage.jpg");
                 me = Crop(me);
                 imwrite("ThreshCropped.jpg", me);
-                DirectionTest(me);
-                System.out.println(DirectionTest(me));
-                if(DirectionTest(me) == 1)
+                int printme = DirectionTest(me);
+                System.out.println(printme);
+                if(printme == 1)
                 {
                     datatable.putString("Direction: ", "GO LEFT");
                     System.out.println("GO LEFT");
                 }
-                else if(DirectionTest(me) == 2)
+                else if(printme == 2)
                 {
                     datatable.putString("Direction: ", "GO RIGHT");
                     System.out.println("GO RIGHT");
@@ -467,7 +467,7 @@ public class ImageThreshNCrop {
             String destinationFile = "newImage.jpg";
             SaveImage(imageUrl, destinationFile);
             Mat img = imread("newImage.jpg");
-            imwrite("InitialImage.jpg", img);
+            //imwrite("InitialImage.jpg", img);
             Mat me;
             me = Thresh("newImage.jpg");
             me = Crop(me);
@@ -481,10 +481,10 @@ public class ImageThreshNCrop {
 public static void SaveImage (String imageUrl, String destinationFile) throws IOException {
         System.out.println("In SaveImage");
         URL image = new URL(imageUrl);
-        System.out.println("Got URL Object");
+        //System.out.println("Got URL Object");
         OutputStream os;
         try (InputStream is = image.openStream()) {
-            System.out.println("Created inputstream");
+            //System.out.println("Created inputstream");
             os = new FileOutputStream(destinationFile);
             System.out.println("Createdoutputstream");
             byte[] b = new byte[2048];
