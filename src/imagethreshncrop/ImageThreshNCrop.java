@@ -5,23 +5,29 @@
  */
 package imagethreshncrop;
 import java.net.URL;
-import org.opencv.core.Core;
+import org.opencv.core.*;
+/*import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
-import java.io.FileOutputStream;
+*/
+import java.io.*;
+
+/*import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
+*/
+import java.util.ArrayList;
 import static org.opencv.highgui.Highgui.imread;
 import static org.opencv.highgui.Highgui.imwrite;
 import org.opencv.imgproc.Imgproc;
 import static org.opencv.imgproc.Imgproc.threshold;
 import edu.wpi.first.wpilibj.networktables.*;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.net.NoRouteToHostException;
 import java.util.List;
 /**
@@ -40,10 +46,11 @@ public class ImageThreshNCrop {
     public static void main(String[] args) throws IOException {
         GetFromText();
        //ImageLoad();
-       OnRobitTest();
-       //OnSystemTest("newImage.jpg");
+       //OnRobitTest();
+       OnSystemTest("newImage.jpg");
        //FromCameraTest();
     }
+    //variables for the different threshold values that will be used to threshold the image
     static int hThreshHigh;
     static int hThreshLow;
     static int sThreshHigh;
@@ -62,7 +69,7 @@ public class ImageThreshNCrop {
     public static void ImageLoad() throws IOException {
         try
         {
-            SaveImage("http://10.16.78.11/jpg/image.jpg", "newImage.jpg");
+            SaveImage("http://10.16.78.11/jpg/image.jpg", "newImage.jpg"); //Saves the image from the URL
             Mat img;
             img = imread("newImage.jpg");
             imwrite("InitialImage.jpg", img);
@@ -77,35 +84,42 @@ public class ImageThreshNCrop {
     public static void GetFromTextV2(){
         try 
         {
-            BufferedReader reader = new BufferedReader(new FileReader("values.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("values.txt")); //Finds the right document
             String line;
             String [] lineParts;
             try
             {
-                while ((line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) { //while there is stuff on the line you are reading
                     lineParts = line.split(" ");
                     if(lineParts[0].equals("HUE_HIGH"))
                     {
+                        System.out.println("H^");
                         hThreshHigh = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("HUE_LOW"))
                     {
+                        System.out.println("Hv");
                         hThreshLow = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("SAT_HIGH"))
                     {
+                        System.out.println("S^");
                         sThreshHigh = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("SAT_LOW"))
                     {
+                        
+                        System.out.println("Sv");
                         sThreshLow = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("VAL_HIGH"))
                     {
+                        System.out.println("V^");
                         vThreshHigh = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("VAL_LOW"))
                     {
+                        System.out.println("Vv");
                         vThreshLow = Integer.parseInt(lineParts[1]);
                     }
                     else if(lineParts[0].equals("STARTPOS"))
@@ -264,7 +278,7 @@ public class ImageThreshNCrop {
     public static int DirectionTestV2(Mat MatrixName){
         imwrite("DirectionTest.jpg", MatrixName);
         double totalPixelsRight;
-        totalPixelsRight = (double)MatrixName.rows() * (double)MatrixName.cols();
+        totalPixelsRight = (double)MatrixName.rows() * (double)MatrixName.cols(); //finds the total number of pixels in an image
         double blackPixelsRight;
         blackPixelsRight = (double)totalPixelsRight - (double)Core.countNonZero(MatrixName); //non zeros are WHITE
         System.out.println("Total pixels right: " + totalPixelsRight);
@@ -322,10 +336,14 @@ public class ImageThreshNCrop {
             selfHigh = selfHigh - 180;
         }
         /*if(selfLow > selfHigh)
+=======
+        if(selfLow > selfHigh)
+>>>>>>> b8a34e28f74f34080debc917453cabb62310f705
         {
             int x = selfHigh;
             selfHigh = selfLow;
             selfLow = x;
+<<<<<<< HEAD
         }*/
         if(selfLow == selfHigh)
         {
@@ -346,7 +364,7 @@ public class ImageThreshNCrop {
         Mat saturation = new Mat();
         Mat value = new Mat();
         Mat threshedimage = new Mat();
-        List<Mat> SourceForThresh = new ArrayList<>();
+        List<Mat> SourceForThresh = new ArrayList<>(); //Array lists for hue, saturation and value per threshold
         List<Mat> LowThreshDestination = new ArrayList<>();
         List<Mat> HighThreshDestination = new ArrayList<>(0);
         
@@ -412,33 +430,47 @@ public class ImageThreshNCrop {
         //imwrite("CroppedTest.jpg", cropStraightAhead);
         return cropStraightAhead;
     }
-    public static void OnSystemTest(String ImageSource){
+    public static Mat CameraCrop(String ImageSource) { //for cropping without thresholding
+        Mat source = imread(ImageSource);
+        Size sourcesize = source.size();
+        int sourceHeight = (int)sourcesize.height;//Find height of image
+        int sourceWidth = (int)sourcesize.width; //find width of image
+        //double yCrop = 0;
+        double startingpoint = (leftSideStartPoint*sourceWidth); //the left side
+        double heightCrop = sourceHeight*ystartpos; //exclude bumpers
+        double secondarycrop = ((leftSideCropDistance)*sourceWidth);
+        Rect straightAhead = new Rect ((int)startingpoint, (int)heightCrop, (int)secondarycrop, (sourceHeight-(int)heightCrop));
+        Mat cropStraightAhead = new Mat(source, straightAhead); //unalteredorinal should be jasmineBlur
+        imwrite("CameraCropped.jpg", cropStraightAhead);
+        return cropStraightAhead;
+    }
+    public static void OnSystemTest(String ImageSource){ //for using preloaded image on the computer
        Mat me;
        me = Thresh(ImageSource);
        me = Crop(me);
        DirectionTest(me);
     }
-    public static void OnRobitTest() throws IOException{
+    public static void OnRobitTest() throws IOException{ //for using image when robot is enabled
         boolean initialLoop = true;
         System.out.println("On");
         NetworkTable.setClientMode();
-        NetworkTable.setIPAddress("10.16.78.2");    
-        NetworkTable datatable = NetworkTable.getTable("datatable");
+        NetworkTable.setIPAddress("10.16.78.2");    //find network tables
+        NetworkTable datatable = NetworkTable.getTable("datatable"); //make table
         while(initialLoop)
         {
-            double init = datatable.getNumber("Enabled", 0);
+            double init = datatable.getNumber("Enabled", 0); //check to see if we are enabled or not, default is NO
             System.out.println("Are we enabled? " + init);
-            if(init == 1) {
+            if(init == 1) { //once we are enabled...
                 initialLoop = false;
-                String imageUrl = "http://10.16.78.11/jpg/image.jpg" ;
+                String imageUrl = "http://10.16.78.11/jpg/image.jpg" ; //get image
                 String destinationFile;
-                destinationFile = "newImage.jpg";
+                destinationFile = "newImage.jpg"; //make image
                 SaveImage(imageUrl, destinationFile);
                 Mat img = imread("newImage.jpg");
                 //imwrite("Purple.jpg", img);
                 Mat me;
-                me = Thresh("newImage.jpg");
-                me = Crop(me);
+                me = Thresh("newImage.jpg"); //thresh image
+                me = Crop(me); //crop image
                 imwrite("ThreshCropped.jpg", me);
                 int printme = DirectionTest(me);
                 System.out.println(printme);
@@ -460,17 +492,18 @@ public class ImageThreshNCrop {
             }
         }
     }
-    public static void FromCameraTest() throws IOException{
+    public static void FromCameraTest() throws IOException{ //for testing while using an image from the computer
         try
         {
-            String imageUrl = "http://10.16.78.11/jpg/image.jpg" ;
-            String destinationFile = "newImage.jpg";
+            String imageUrl = "http://10.16.78.11/jpg/image.jpg" ; //get image from URL
+            String destinationFile = "newImage.jpg"; //make image
             SaveImage(imageUrl, destinationFile);
             Mat img = imread("newImage.jpg");
             //imwrite("InitialImage.jpg", img);
             Mat me;
-            me = Thresh("newImage.jpg");
-            me = Crop(me);
+            //me = CameraCrop("newImage.jpg"); // cropping without thresholding
+            me = Thresh("newImage.jpg"); //threshing image
+            me = Crop(me); //cropping image with thresholds
             DirectionTest(me);
         }
         catch(NoRouteToHostException f) 
@@ -478,7 +511,7 @@ public class ImageThreshNCrop {
             System.out.println("Not connected to camera");
         }
     }
-public static void SaveImage (String imageUrl, String destinationFile) throws IOException {
+public static void SaveImage (String imageUrl, String destinationFile) throws IOException { //saves the image from the URL
         System.out.println("In SaveImage");
         URL image = new URL(imageUrl);
         //System.out.println("Got URL Object");
