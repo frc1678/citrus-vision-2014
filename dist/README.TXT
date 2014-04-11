@@ -11,11 +11,7 @@ JAR files manifest file (MANIFEST.MF).
 To run the project from the command line, go to the dist folder and
 type the following:
 
-<<<<<<< HEAD
 java -jar "ImageThreshNCrop.jar" 
-=======
-java -jar "imageSave-N-Load.jar" 
->>>>>>> 92317b864dcef035b96b4baec5edcc62adb63306
 
 To distribute this project, zip up the dist folder (including the lib folder)
 and distribute the ZIP file.
