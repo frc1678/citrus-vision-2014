@@ -1,0 +1,73 @@
+[33mcommit d649c92ad8ba57ce88483f8e458ab5ce8d758091[m
+Merge: 9069d82 b8a34e2
+Author: DuPiMan <bryton@themoellers.net>
+Date:   Thu Apr 10 15:57:07 2014 -0700
+
+    After SVR updates.
+
+[33mcommit 9069d82df3f6665560375d06f58297378863f7d8[m
+Author: DuPiMan <bryton@themoellers.net>
+Date:   Thu Apr 10 15:40:20 2014 -0700
+
+    after SVR update.
+
+[33mcommit 073f09a51eb3c06c6ed2397f4d486fc6542f08da[m
+Author: DuPiMan <bryton@themoellers.net>
+Date:   Wed Apr 9 16:06:57 2014 -0700
+
+    Added column counting in place of pixel counting. More consistant thresholding.
+
+[33mcommit 2f9a861dc3a01f515fd4bd26dafbcc8794561ed2[m
+Author: DuPiMan <bryton@themoellers.net>
+Date:   Fri Mar 28 14:31:54 2014 -0700
+
+    Using colomns not pixls.
+
+[33mcommit b8a34e28f74f34080debc917453cabb62310f705[m
+Author: Citrus Circuits Programming <1678programming@gmail.com>
+Date:   Sun Mar 23 15:44:53 2014 -0700
+
+    Worked on thresholding, inverted some channals and worked on making the code work with the NI Vision Assistant
+
+[33mcommit 8cae085ad2c3592d27322a9e0d21ed5fcb1b2bbf[m
+Author: Citrus Circuits Programming <1678programming@gmail.com>
+Date:   Sat Mar 22 13:55:58 2014 -0700
+
+    Adjusted thresholds
+
+[33mcommit 4eec78ac83da68749d137e8b967158c27a1f30f6[m
+Author: Citrus Circuits Programming <1678programming@gmail.com>
+Date:   Sat Mar 22 12:38:56 2014 -0700
+
+    Adjusted crop values
+
+[33mcommit 3e51fa66cc82ebd313abeec9d417bf3dff47ceae[m
+Merge: e01967f 92317b8
+Author: unknown <CitrusCircuits@gmail.com>
+Date:   Sat Feb 22 14:02:39 2014 -0800
+
+    stuff
+
+[33mcommit e01967f989e021c5485bb8eb1452297a48526fd0[m
+Author: unknown <CitrusCircuits@gmail.com>
+Date:   Sat Feb 22 09:38:11 2014 -0800
+
+    Rewrote/cleaned up from scratch
+
+[33mcommit 33da6c54894bb4bb3744311a4d6713cade05c010[m
+Author: unknown <CitrusCircuits@gmail.com>
+Date:   Thu Feb 20 15:53:45 2014 -0800
+
+    initial commit for ImageThreshNCrop.
+
+[33mcommit 92317b864dcef035b96b4baec5edcc62adb63306[m
+Author: unknown <jasmine.zdn@gmail.com>
+Date:   Mon Jan 20 16:39:59 2014 -0800
+
+    Can find Red bumpers
+
+[33mcommit 1ebdd7777e1838abb24caa26ba49f40bd414969d[m
+Author: nymvaline <jasmine.zdn@gmail.com>
+Date:   Sun Jan 19 09:53:38 2014 -0800
+
+    Created. Uses OpenCV to open and save an image.

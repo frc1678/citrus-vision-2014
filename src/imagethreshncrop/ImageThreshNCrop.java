@@ -46,8 +46,8 @@ public class ImageThreshNCrop {
     public static void main(String[] args) throws IOException {
         GetFromText();
        //ImageLoad();
-       //OnRobitTest();
-       OnSystemTest("newImage.jpg");
+       OnRobitTest();
+       //OnSystemTest("newImage.jpg");
        //FromCameraTest();
     }
     //variables for the different threshold values that will be used to threshold the image
