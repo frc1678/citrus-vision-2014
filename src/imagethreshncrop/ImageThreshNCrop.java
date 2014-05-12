@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package imagethreshncrop;
-import java.net.URL; //allows for the the use of URL lins to grab the photo from camera
+import java.net.URL; //allows for the the use of URL lines to grab the photo from camera
 import org.opencv.core.*; 
 
 /*import org.opencv.core.Core;
@@ -13,7 +13,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Size;
 */
 
-import java.io.*;
+import java.io.*; //for all input/output related methods. ie I/O stream, IO Expection etc
 
 /*import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -24,13 +24,13 @@ import java.io.IOException;
 import java.io.FileReader;
 */
 import java.util.ArrayList;
-import static org.opencv.highgui.Highgui.imread;
-import static org.opencv.highgui.Highgui.imwrite;
-import org.opencv.imgproc.Imgproc;
-import static org.opencv.imgproc.Imgproc.threshold;
-import edu.wpi.first.wpilibj.networktables.*;
+import static org.opencv.highgui.Highgui.imread; //reading images
+import static org.opencv.highgui.Highgui.imwrite; //writing images
+import org.opencv.imgproc.Imgproc; //methods for working with images
+import static org.opencv.imgproc.Imgproc.threshold; //thresholding methods
+import edu.wpi.first.wpilibj.networktables.*; //For network tables and passing bac/forth values
 //import java.io.FileNotFoundException;
-import java.net.NoRouteToHostException;
+import java.net.NoRouteToHostException; //Hosting issue exceptions
 import java.util.List;
 /**
  *
@@ -79,17 +79,17 @@ public class ImageThreshNCrop {
             //Saves the image from the URL
             SaveImage("http://10.16.78.11/jpg/image.jpg", "newImage.jpg"); 
             Mat img;
-            img = imread("newImage.jpg");
-            imwrite("InitialImage.jpg", img);
+            img = imread("newImage.jpg"); //loads image from newImage
+            imwrite("InitialImage.jpg", img); //creates InitialImage from newImage
         }
-        catch(NoRouteToHostException f) 
+        catch(NoRouteToHostException f) //gets thrown if there's no .jpg
         {
             System.out.println("Not connected to camera");
             Mat img = imread("TestImage.jpg");
             imwrite("newImage.jpg", img);
         }
     }
-    public static void GetFromTextV2(){
+    public static void GetFromTextV2(){ //NEVER USED
         try 
         {
             BufferedReader reader = new BufferedReader(new FileReader("values.txt")); //Finds the right document
@@ -98,11 +98,12 @@ public class ImageThreshNCrop {
             try
             {
                 while ((line = reader.readLine()) != null) { //while there is stuff on the line you are reading
-                    lineParts = line.split(" ");
-                    if(lineParts[0].equals("HUE_HIGH"))
+                    lineParts = line.split(" "); //splits the line where ever there is a space in the doc
+                    //then assigns the value following the slace to the corresponding variable
+                    if(lineParts[0].equals("HUE_HIGH")) // v = low, ^ = high
                     {
                         System.out.println("H^");
-                        hThreshHigh = Integer.parseInt(lineParts[1]);
+                        hThreshHigh = Integer.parseInt(lineParts[1]); //assigns value to integer
                     }
                     else if(lineParts[0].equals("HUE_LOW"))
                     {
@@ -130,7 +131,8 @@ public class ImageThreshNCrop {
                         System.out.println("Vv");
                         vThreshLow = Integer.parseInt(lineParts[1]);
                     }
-                    else if(lineParts[0].equals("STARTPOS"))
+                    else if(lineParts[0].equals("STARTPOS")) //each of these is for a different starting position
+                    //corresponds to what side of the field the robot is positioned on when you are facing the goals
                     {
                         if(lineParts[1].equals("LEFT"))
                         {
@@ -138,7 +140,7 @@ public class ImageThreshNCrop {
                         }
                         else if(lineParts[1].equals("RIGHT"))
                         {
-                            startPos = 3;
+                            startPos = 3; // ??
                         }
                         else
                         {
@@ -173,7 +175,7 @@ public class ImageThreshNCrop {
             }
             catch(IOException f)
             {
-                System.out.println("Reading values error");
+                System.out.println("Reading values error"); //issue reading the text values
             }
         }
         catch(FileNotFoundException e)
@@ -189,15 +191,16 @@ public class ImageThreshNCrop {
             String [] lineParts;
             try
             {
-                while ((line = reader.readLine()) != null) {
-                    lineParts = line.split(" ");
+                while ((line = reader.readLine()) != null) { //if there's stuff on teh line you are trying to read
+                    lineParts = line.split(" "); //splits the line whenever ther is a space in the doc
+                    //then assigns the calue following the space to the corresponding variable
                     if(lineParts[0].equals("STARTSIDE")) 
                     {
                         if(lineParts[1].equals("RIGHT"))
                         {
-                            startonrightside = true;
+                            startonrightside = true; // on the RIGHT
                         }
-                        else startonrightside = false;
+                        else startonrightside = false; //on the LEFT
                     }
                     if(lineParts[0].equals("HUE_HIGH") && !startonrightside)
                     {
@@ -283,8 +286,8 @@ public class ImageThreshNCrop {
             System.out.println("No values file");
         }
 }
-    public static int DirectionTestV2(Mat MatrixName){
-        imwrite("DirectionTest.jpg", MatrixName);
+    public static int DirectionTestV2(Mat MatrixName){ //NEVER USED
+        imwrite("DirectionTest.jpg", MatrixName); 
         double totalPixelsRight;
         totalPixelsRight = (double)MatrixName.rows() * (double)MatrixName.cols(); //finds the total number of pixels in an image
         double blackPixelsRight;
@@ -308,22 +311,23 @@ public class ImageThreshNCrop {
     
     public static int DirectionTest(Mat MatrixName){
         imwrite("DirectionTest.jpg", MatrixName);
-        int numNonZero = 0;
-        for(int i = 0; i<MatrixName.rows(); i++)
+        int numNonZero = 0; //resets
+        for(int i = 0; i<MatrixName.rows(); i++) //counting the rows of pixels in the image
         {
             Mat column = MatrixName.col(i);
-            if(Core.countNonZero(column) > 0)
+            if(Core.countNonZero(column) > 0) //if they are white.... add to counter
             {
                 numNonZero++;
             }
         }
-        System.out.println("Columns: " + numNonZero);
-        if (numNonZero > mincolsforhot)
+        System.out.println("Columns: " + numNonZero); //How many white columns?
+        if (numNonZero > mincolsforhot) //If the number of columns is GREATER than the numbe requested, the hot goal is on the left
+        //number requested should be equivalent to the static vision target
         {
             System.out.println("HOT LEFT");
             return 1;
         }
-        System.out.println("HOT RIGHT");
+        System.out.println("HOT RIGHT"); //if not, the hot goal is on the right side
         return 2;
     }
     
@@ -331,9 +335,10 @@ public class ImageThreshNCrop {
         
         int shift = 100; //TODO numbers
         //int shift = 0;
-        int selfLow = (hThreshLow + shift) * 180/256; //for easy inputs in the text document since Hue is annoying and on the bottom of the scale
+        int selfLow = (hThreshLow + shift) * 180/256; //for easy inputs in the text document since Hue is annoying and on the bottom of the scales
+        //Used b/c Java thresh vals aren't equal to NI Vision Assistant (for hue)
         System.out.println("selfLow: " + selfLow);
-        int selfHigh = (hThreshHigh + shift) * 180/256;
+        int selfHigh = (hThreshHigh + shift) * 180/256; //againg for ease of inputs. See above
         System.out.println("selfHigh: " + selfHigh);
         if(selfLow >= 180)
         {
@@ -367,7 +372,7 @@ public class ImageThreshNCrop {
         List<Mat> LowThreshDestination = new ArrayList<>();
         List<Mat> HighThreshDestination = new ArrayList<>(0);
         
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 3; i++) //Three channels, 1 for each H, S and V
         {
             LowThreshDestination.add(new Mat());
         }
@@ -376,7 +381,7 @@ public class ImageThreshNCrop {
             HighThreshDestination.add(new Mat());
         }
         System.out.println(hThreshHigh+ ", " + hThreshLow + ", " + sThreshHigh + ", " + sThreshLow + ", " + vThreshHigh + ", " + vThreshLow);
-        Imgproc.cvtColor(original, original, Imgproc.COLOR_RGB2HSV);
+        Imgproc.cvtColor(original, original, Imgproc.COLOR_RGB2HSV); //convert the image from RGB to HSV (filter)
         //imwrite("Intermediate.jpg", original);
         Core.split(original, SourceForThresh);
         //imwrite("SourceThresh0.jpg", SourceForThresh.get(0));
@@ -395,14 +400,14 @@ public class ImageThreshNCrop {
         //Smashing all the different channels together forcefully
         if(selfLow < selfHigh)
         {
-            Core.bitwise_and(LowThreshDestination.get(0), HighThreshDestination.get(0), hue);
+            Core.bitwise_and(LowThreshDestination.get(0), HighThreshDestination.get(0), hue); //calculates the conjunction of the two hue arrays (same size)
         }
         else
         {
-            Core.bitwise_or(LowThreshDestination.get(0), HighThreshDestination.get(0), hue);
+            Core.bitwise_or(LowThreshDestination.get(0), HighThreshDestination.get(0), hue); //otherwise calculates the disjunction of the two hue arrays (same size)
         }
         
-        Core.bitwise_and(LowThreshDestination.get(1), HighThreshDestination.get(1), saturation);
+        Core.bitwise_and(LowThreshDestination.get(1), HighThreshDestination.get(1), saturation); //same conjunction but for sat and val
         Core.bitwise_and(LowThreshDestination.get(2), HighThreshDestination.get(2), value);
         
         System.out.println("selfLow: " + selfLow);
@@ -422,7 +427,7 @@ public class ImageThreshNCrop {
         imwrite("ThreshedImage.jpg", threshedimage);
         return threshedimage;
     }
-    public static Mat Crop(Mat original) {
+    public static Mat Crop(Mat original) { //crops the image to our liking of size
         //imwrite("Original.jpg", original);
         Size originalsize = original.size();
         int ySize = (int)originalsize.height; //declaring the height of the image
@@ -493,7 +498,7 @@ public class ImageThreshNCrop {
                 }
                 else
                 {
-                    datatable.putString("Direction: ", "INCONCLUSIVE");
+                    datatable.putString("Direction: ", "INCONCLUSIVE"); //Can't decide just choose
                     System.out.println("INCONCLUSIVE");
                 }
             }
@@ -504,14 +509,14 @@ public class ImageThreshNCrop {
         {
             String imageUrl = "http://10.16.78.11/jpg/image.jpg" ; //get image from URL
             String destinationFile = "newImage.jpg"; //make image
-            SaveImage(imageUrl, destinationFile);
+            SaveImage(imageUrl, destinationFile); //save the image
             Mat img = imread("newImage.jpg");
             //imwrite("InitialImage.jpg", img);
             Mat me;
             //me = CameraCrop("newImage.jpg"); // cropping without thresholding
             me = Thresh("newImage.jpg"); //threshing image
             me = Crop(me); //cropping image with thresholds
-            DirectionTest(me);
+            DirectionTest(me); //what direction to go
         }
         catch(NoRouteToHostException f) 
         {
@@ -520,24 +525,24 @@ public class ImageThreshNCrop {
     }
 public static void SaveImage (String imageUrl, String destinationFile) throws IOException { //saves the image from the URL
         System.out.println("In SaveImage");
-        URL image = new URL(imageUrl);
+        URL image = new URL(imageUrl); //creates URL object
         //System.out.println("Got URL Object");
-        OutputStream os;
+        OutputStream os; //sets the output stream
         try (InputStream is = image.openStream()) {
             //System.out.println("Created inputstream");
-            os = new FileOutputStream(destinationFile);
-            System.out.println("Createdoutputstream");
+            os = new FileOutputStream(destinationFile); //Output to the destinationFile
+            System.out.println("Createdoutputstream"); //Make sure it's created...
 
             //how big the picture is
             byte[] b = new byte[2048];
             int length;
-            while((length = is.read(b)) != -1){
+            while((length = is.read(b)) != -1){ //length is equal to the bytes of the image\
                 os.write(b, 0, length);
             }
         }
-        os.close();    
+        os.close(); //flush and close    
 }
-private static void receive_image(String imageUrl, String destinationFile) {
+private static void receive_image(String imageUrl, String destinationFile) { //Unused...
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
