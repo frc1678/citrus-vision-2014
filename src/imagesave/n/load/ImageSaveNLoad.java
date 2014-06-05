@@ -3,6 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+ 
+ /*
+ This code was made to be able to detect and avoid bumpers of the opposing goalie bots in autonomous. The code
+ was never perfected, and never used in competition.
+ */
 
 package imagesave.n.load;
 //import com.googlecode.javacv.cpp.opencv_highgui;
