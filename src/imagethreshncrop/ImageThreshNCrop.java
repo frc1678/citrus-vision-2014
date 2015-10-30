@@ -40,7 +40,7 @@ public class ImageThreshNCrop {
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //work around for locating opencv library
-        System.load("C:\\Users\\Developer\\Downloads\\opencv\\build\\java\\x86\\opencv_java248.dll");
+        System.load("C:\\users\\Citrus Circuits\\workspace\\vision2014\\opencv_java248_64.dll");
     }
     /**
      * @param args the command line arguments
@@ -465,7 +465,7 @@ public class ImageThreshNCrop {
     public static void OnRobitTest() throws IOException{ //for using image when robot is enabled
         boolean initialLoop = true; //sets the intial loop to run
         System.out.println("On");
-        NetworkTable.setClientMode();
+        ///NetworkTable.setClientMode(); Unnecessary?
         NetworkTable.setIPAddress("10.16.78.2");    //find network tables
         NetworkTable datatable = NetworkTable.getTable("datatable"); //make table
         while(initialLoop) //continually runs until the robot are enabled
