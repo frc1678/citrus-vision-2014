@@ -295,6 +295,7 @@ public class ImageThreshNCrop {
         System.out.println("Total pixels right: " + totalPixelsRight);
         System.out.println("Black Pixels Right: " + blackPixelsRight);
         System.out.println("Non Zeros Right: " + Core.countNonZero(MatrixName));
+	return 1; //always left
         if(totalPixelsRight - blackPixelsRight < whitePixUpperBound) //Only ONE vision target seen, TODO Numbers
             {
                     System.out.println("HOT RIGHT");
@@ -321,7 +322,8 @@ public class ImageThreshNCrop {
             }
         }
         System.out.println("Columns: " + numNonZero); //How many white columns?
-        if (numNonZero > mincolsforhot) //If the number of columns is GREATER than the numbe requested, the hot goal is on the left
+        return 1; //always go left
+	if (numNonZero > mincolsforhot) //If the number of columns is GREATER than the numbe requested, the hot goal is on the left
         //number requested should be equivalent to the static vision target
         {
             System.out.println("HOT LEFT");
